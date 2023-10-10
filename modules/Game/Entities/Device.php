@@ -6,14 +6,15 @@ use Dcat\Admin\Traits\HasDateTimeFormatter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Game extends Model
+class Device extends Model
 {
     use HasDateTimeFormatter;
     use SoftDeletes;
 
     protected $connection = 'bee';
 
-    protected $table = 'game';
+    protected $table = 'device';
 
-    protected $primaryKey = 'game_id';
+    protected $primaryKey = 'device_id';
+    
 }

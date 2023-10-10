@@ -2,5 +2,6 @@
     "Order": true,
     "System": true,
     "Game": true,
-    "User": true
+    "User": true,
+    "Product": true
 }
