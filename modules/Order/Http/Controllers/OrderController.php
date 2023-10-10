@@ -193,7 +193,7 @@ class OrderController extends AdminController
      */
     protected function form()
     {
-        return Form::make(new Order(['en', 'zh', 'info', 'items', 'pay', 'boost', 'refund']), function (Form $form) {
+        return Form::make(new Order(['en', 'zh', 'info', 'items', 'pay', 'boost', 'refund', 'user']), function (Form $form) {
 
             $form->disableSubmitButton();
             $form->disableResetButton();
@@ -404,8 +404,45 @@ class OrderController extends AdminController
                 });
             }
             $form->tab('客户', function (Form $form) {
+                $form->column(6, function (Form $form) {
+                    $form->text('user.uid', '客户')->disable();
+                    $form->text('user.country', '国家')->disable();
+                    $form->text('user.first_name', '名')->disable();
+                    $form->text('user.last_name', '姓')->disable();
+                    $form->mobile('user.mobile ', '手机')->disable();
+                    $form->text('user.email ', '邮箱')->disable();
+                    $form->select('user.is_skype', 'Skype')->disable()->options([
+                        1 => '未联系',
+                        2 => '已联系',
+                        3 => '联系不上',
+                        4 => '不要联系',
+                        21 => '短信已联系',
+                        22 => '电话已联系',
+                        23 => '信息已联系',
+                        24 => '上单短信已联系',
+                        25 => '上单电话已联系',
+                        26 => '上单信息已联系'
+                    ]);
+                    $form->select('user.is_whatsapp', 'WhatsApp')->disable()->options([
+                        1 => '未联系',
+                        2 => '已联系',
+                        3 => '上单已联系',
+                        4 => '联系不上',
+                        5 => '不要联系',
+                    ]);
+                });
 
-            });
+                $form->column(6, function (Form $form) {
+                    $form->text('user.ip ', 'I P')->disable();
+                    $form->text('user.country_name ', '国家')->disable();
+                    $form->text('user.region ', '地区')->disable();
+                    $form->text('user.city ', '城市')->disable();
+                    $form->text('user.zip ', '邮编')->disable();
+                    $form->text('user.discord', "Discord")->disable();
+                    $form->text('user.character_name', "角色")->disable();
+                    $form->text('user.battle_id', "战网")->disable();
+                });
+            }, true);
 
             if ($form->model()->pay) {
                 $form->tab('支付', function (Form $form) {

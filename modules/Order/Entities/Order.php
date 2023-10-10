@@ -69,4 +69,9 @@ class Order extends Model
     {
         return $this->HasOne(OrderRefund::class, 'order_id', 'order_id');
     }
+
+    public function user()
+    {
+        return $this->HasOne(OrderUser::class, 'order_id', 'order_id');
+    }
 }
