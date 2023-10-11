@@ -74,4 +74,14 @@ class Order extends Model
     {
         return $this->HasOne(OrderUser::class, 'order_id', 'order_id');
     }
+
+    public function email()
+    {
+        return $this->HasOne(OrderEmail::class, 'order_id', 'order_id');
+    }
+
+    public function logs()
+    {
+        return $this->hasMany(OrderLog::class, 'order_id', 'order_id');
+    }
 }

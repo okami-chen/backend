@@ -56,6 +56,10 @@ class OrderController extends AdminController
     protected function grid()
     {
         return Grid::make(new Order(['site', 'game']), function (Grid $grid) {
+
+            $grid->disableDeleteButton();
+            $grid->disableViewButton();
+
             $grid->model()->orderBy('order_id', 'desc');
             $grid->column('order_id')->sortable();
             $grid->column('order_no')->filter();
@@ -291,25 +295,27 @@ class OrderController extends AdminController
                     $form->display('created_at');
                     $form->display('updated_at');
                 });
-            });
+            }, false, 'basic');
 
             $form->tab('详情', function (Form $form) {
 
                 $form->column(12, function (Form $form) {
                     $form->text('info.service', '服务器')
+                        ->help('格式：游戏 - 模板 - 设备 - 服务器')
                         ->disable();
                 });
+                
                 $form->column(6, function (Form $form) {
 
-                    $form->text('info.num', '产品价格')->disable();
+                    $form->text('info.product_amount', '产品价格')->disable();
+
+                    $form->text('info.service_charge', '服务费')->disable();
 
                     $form->text('info.amount', '实际价格')->disable();
 
                     $form->text('info.amount_dollar', '美金价格')->disable();
 
                     $form->text('info.discount', '优惠折扣')->disable();
-
-                    $form->text('info.service_charge', '服务费')->disable();
 
                     $form->text('info.coupon', '优惠券')->disable();
                 });
@@ -334,7 +340,7 @@ class OrderController extends AdminController
                         ->disable();
                 });
 
-            });
+            }, false, 'detail');
 
             $form->tab('明细', function (Form $form) {
                 $form->hasMany('items', '商品', function (Form\NestedForm $form) {
@@ -376,32 +382,34 @@ class OrderController extends AdminController
                     });
 
                 });
-            });
+            }, false, 'item');
+
             $form->tab('商品', function (Form $form) {
-            });
+
+            }, false, 'product');
 
             //金币
             if ($form->model()->order_type == 1) {
                 $form->tab('类型-金币', function (Form $form) {
 
-                });
+                }, false, 'type');
             } elseif ($form->model()->order_type == 2) {
                 $form->tab('类型-物品', function (Form $form) {
 
-                });
+                }, false, 'type');
             } elseif ($form->model()->order_type == 3) {
                 $form->tab('类型-代练', function (Form $form) {
                     $form->text('boost.created_at', '创建时间');
                     $form->textarea('boost.boost_addition', '代练信息')->disable();
-                });
+                }, false, 'type');
             } elseif ($form->model()->order_type == 4) {
                 $form->tab('类型-综合', function (Form $form) {
 
-                });
+                }, false, 'type');
             } elseif ($form->model()->order_type == 5) {
                 $form->tab('类型-账号', function (Form $form) {
 
-                });
+                }, false, 'type');
             }
             $form->tab('客户', function (Form $form) {
                 $form->column(6, function (Form $form) {
@@ -442,7 +450,7 @@ class OrderController extends AdminController
                     $form->text('user.character_name', "角色")->disable();
                     $form->text('user.battle_id', "战网")->disable();
                 });
-            }, true);
+            }, false, 'user');
 
             if ($form->model()->pay) {
                 $form->tab('支付', function (Form $form) {
@@ -456,7 +464,7 @@ class OrderController extends AdminController
                         $form->text('trade_no', '单号')->disable();
                         $form->text('state', '状态')->disable();
                     });
-                });
+                }, false, 'pay');
             }
 
             if ($form->model()->refund) {
@@ -491,7 +499,7 @@ class OrderController extends AdminController
                         $form->text('refund.dispute_money', '欺诈金额')
                             ->disable();
                     });
-                });
+                }, false, 'refund');
             }
         });
     }
